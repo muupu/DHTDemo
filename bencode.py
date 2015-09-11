@@ -28,7 +28,7 @@ def decode_string(bdata, de_index):
     if bdata[de_index] == b'0' and colon != de_index+1:
         raise ValueError
     colon += 1
-    return (bdata[colon:colon+n], colon+n)
+    return (bdata[colon:colon+n].decode('utf-8'), colon+n)
 
 def decode_list(bdata, de_index):
     r, de_index = [], de_index+1
@@ -42,7 +42,7 @@ def decode_dict(bdata, de_index):
     r, de_index = {}, de_index+1
     while chr(bdata[de_index]) != 'e':
         k, de_index = decode_string(bdata, de_index)
-        r[k.decode('utf-8')], de_index = decode_func[chr(bdata[de_index])](bdata, de_index)
+        r[k], de_index = decode_func[chr(bdata[de_index])](bdata, de_index)
     return (r, de_index + 1)
 
 decode_func = {}
